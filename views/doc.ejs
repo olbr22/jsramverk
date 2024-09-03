@@ -2,11 +2,37 @@
     <h2>Dokument</h2>
     <form method="POST" action="/" class="new-doc">
         <label for="title">Titel</label>
-        <input type="text" name="title" value="<%= doc.title %>" />
+        <input type="text" name="title" value="<%= doc.title %>">
 
         <label for="content">Innehåll</label>
         <textarea name="content"><%= doc.content %></textarea>
 
-        <input type="submit" value="Uppdatera" />
+        <input type="button" onclick="putContent()" value="Uppdatera">
+        <input type="submit" value="Spara som nytt">
     </form>
+
+    <script>
+        function putContent(event) {
+            // Put form content to server
+            fetch('/<%= doc.id %>', {
+                method: 'PUT',
+                headers: {
+                    // form encoded data
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: // Form encoded data on submit
+                    new URLSearchParams(new FormData(document.querySelector('form.new-doc')))
+
+            }).then((response) => {
+                if (!response.ok) {
+                    alert('Network response was not ok.');
+                }
+                return response.text();
+            }).then((text) => {
+                alert(text);
+            }).catch((error) => {
+                alert('There has been a problem with your fetch operation:', error);
+            });
+        }
+    </script>
 <%- include('includes/footer'); %>
