@@ -35,8 +35,7 @@ app.post("/", async (req, res) => {
 
 app.put("/:id", async (req, res) => {
     const result = await documents.putOne(req.params.id, req.body);
-
-    return res.redirect(`/${req.params.id}`);
+    return result? res.send("Updated"): res.send("Failed to update");
 });
 
 app.get('/:id', async (req, res) => {
