@@ -55,19 +55,19 @@ const docs = {
         let db = await openDb();
 
         try {
-            return await db.run(
+            await db.run(
                 'UPDATE documents SET title=?, content=? WHERE rowid=?',
                 body.title,
                 body.content,
                 id,
             );
+            return true;
         } catch (e) {
             console.error(e);
             return false;
         } finally {
             await db.close();
         }
-        return true;
     }
 };
 
