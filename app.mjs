@@ -3,6 +3,7 @@ import 'dotenv/config'
 const port = process.env.PORT;
 
 import express from 'express';
+import methodOverride from 'method-override';
 import bodyParser from 'body-parser';
 import path from 'path';
 import morgan from 'morgan';
@@ -26,11 +27,35 @@ if (process.env.NODE_ENV !== 'test') {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(methodOverride('_method'));
+app.use((req, res, next) => {
+    console.log(`Method: ${req.method}, Original Method: ${req.originalMethod}`);
+    next();
+});
 
 app.post("/", async (req, res) => {
     const result = await documents.addOne(req.body);
 
     return res.redirect(`/${result.lastID}`);
+});
+
+// app.put("/", async (req, res) => {
+//     // PUT requests should return 204 No Content
+//     res.send("PUT route triggered successfully!");
+// });
+
+// A simple POST route for testing
+// app.post("/", (req, res) => {
+//     res.send("POST request triggered");
+// });
+
+// A simple PUT route for testing
+app.put("/", async (req, res) => {
+    await documents.updateDocument(req.body)
+    return res.redirect('/');
+    // return res.render("index", { docs: await documents.getAll() });
+    // res.send(req.body);
+    // res.send("PUT request triggered");
 });
 
 app.get('/:id', async (req, res) => {
@@ -45,5 +70,5 @@ app.get('/', async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+    console.log(`Example app listening on port ${port}`)
 });
