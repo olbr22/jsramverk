@@ -33,7 +33,7 @@
             }).then((text) => {
                 alert(text);
             }).catch((error) => {
-                alert('There has been a problem with your fetch operation:', error);
+                alert('There has been a problem with your fetch operation: ' + error.message);
             });
         }
     </script>
