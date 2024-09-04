@@ -27,44 +27,51 @@ if (process.env.NODE_ENV !== 'test') {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+// middle-ware read more > https://expressjs.com/id/resources/middleware/method-override.html
 app.use(methodOverride('_method'));
+// shows which request method is used e.g., POST,PUT,DELETE
 app.use((req, res, next) => {
     console.log(`Method: ${req.method}, Original Method: ${req.originalMethod}`);
     next();
 });
 
-app.post("/", async (req, res) => {
-    const result = await documents.addOne(req.body);
-
-    return res.redirect(`/${result.lastID}`);
-});
-
-// app.put("/", async (req, res) => {
-//     // PUT requests should return 204 No Content
-//     res.send("PUT route triggered successfully!");
-// });
 
 // A simple POST route for testing
 // app.post("/", (req, res) => {
 //     res.send("POST request triggered");
 // });
 
-// A simple PUT route for testing
-app.put("/", async (req, res) => {
-    await documents.updateDocument(req.body)
+// Create a new document
+app.post("/document", async (req, res) => {
+    await documents.addOne(req.body);
+
     return res.redirect('/');
-    // return res.render("index", { docs: await documents.getAll() });
-    // res.send(req.body);
-    // res.send("PUT request triggered");
+});
+
+// Updates an existing document
+app.put("/document", async (req, res) => {
+    await documents.updateDocument(req.body)
+    return res.redirect(`/update/${req.body.id}`);
+});
+
+// Shows create document form
+app.get('/create', (req, res) => {
+    res.render('document/create');
+});
+
+// Shows update document form
+app.get('/update/:id', async (req, res) => {
+    res.render('document/update', { doc: await documents.getOne(req.params.id) });
 });
 
 app.get('/:id', async (req, res) => {
     return res.render(
-        "doc",
+        'document/update',
         { doc: await documents.getOne(req.params.id) }
     );
 });
 
+// Shows index page view
 app.get('/', async (req, res) => {
     return res.render("index", { docs: await documents.getAll() });
 });

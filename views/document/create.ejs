@@ -1,0 +1,14 @@
+<%- include('../includes/header'); %>
+<a href="/">Visa samtliga dokument</a>
+    <h2>Skapa dokument</h2>
+    <form method="POST" action="/document" class="new-doc">
+
+        <label for="title">Titel</label>
+        <input type="text" name="title" placeholder="Lägg till titel" />
+
+        <label for="content">Innehåll</label>
+        <textarea name="content" placeholder="Lägg till innehåll"></textarea>
+
+        <input type="submit" value="Skapa Dokument" />
+    </form>
+<%- include('../includes/footer'); %>

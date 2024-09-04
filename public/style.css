@@ -67,3 +67,30 @@ footer {
     padding: 1.4rem 8rem;
     flex-shrink: 0;
 }
+
+/* menu with update and create document */
+#document-menu {
+    width: 200px;
+    font-size: 1.2rem;
+    list-style-type: none;
+    border: 2px solid darkblue;
+    padding: 2px 3px;
+    margin-bottom: 10px;
+}
+
+#document-menu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+#document-menu li a {
+    display: block;
+    padding: 5px 5px 5px 0.5em;
+    background-color: #06406f;
+    color: #fff;
+    text-decoration: none;
+    width: 100%;
+    text-align: center;
+}
